@@ -1,0 +1,32 @@
+{
+  "name": "ilo",
+  "version": "0.0.1",
+  "authors": [
+    "Vadasz Laszlo <maxinteger@gmail.com>"
+  ],
+  "description": "3d engine",
+  "main": "index.html",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "3d",
+    "js",
+    "webgl"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "es6-module-loader": "~0.5.4",
+    "jquery": "~2.1.0",
+    "lodash": "~2.4.1",
+    "requirejs": "~2.1.14"
+  }
+}

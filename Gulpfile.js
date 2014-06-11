@@ -5,12 +5,13 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     runSeq = require('gulp-run-sequence'),
     es = require('event-stream'),
-    plumber = require('gulp-plumber'),
+    //plumber = require('gulp-plumber'),
     changed = require('gulp-changed'),
     traceur = require('gulp-traceur'),
     connect = require('gulp-connect'),
     symlink = require('gulp-symlink'),
-    wiredep  = require('wiredep');
+    wiredep  = require('wiredep'),
+    less = require('gulp-less');
 
 
 var appDir =        '',
@@ -61,6 +62,23 @@ gulp.task('dev-assets', function(){
     );
 });
 
+
+/**
+ * Less fordítás
+ */
+gulp.task('dev-less', function () {
+    return gulp.src([srcDir + 'less/main.less'])
+        .pipe(changed(distDir + 'css/'))
+        .pipe(less()
+            .on('error', gutil.log)
+            .on("error", notify.onError(function (error) {
+                return "Less Error: " + error.message;
+            }))
+    )
+    .pipe(gulp.dest(distDir + 'css/'))
+    .pipe(connect.reload());
+});
+
 /**
  * Bower függőségek beszúrása az index.html-be
  */
@@ -82,8 +100,9 @@ gulp.task('bower', function () {
 });
 
 gulp.task('dev', ['clean-dist'], function () {
-    runSeq('dev-assets', 'dev-js', 'dev-html', function(){
+    runSeq('dev-assets', 'dev-less', 'dev-js', 'dev-html', function(){
         gulp.watch(JSFiles, ['dev-js']);
         gulp.watch(HTMLFiles, ['dev-html']);
+        gulp.watch(lessFiles, ['dev-less']);
     });
 });

@@ -8,17 +8,19 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     changed = require('gulp-changed'),
     traceur = require('gulp-traceur'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+    symlink = require('gulp-symlink'),
+    wiredep  = require('wiredep');
+
 
 var appDir =        '',
     distDir =       appDir + 'dist/',
     srcDir =        appDir + 'src/',
     testDir =       appDir + 'test/',
-    coffeeFiles =   srcDir + 'js/**/*.coffee',
     JSFiles =       srcDir + 'js/**/*.js',
     JSTestFiles =   testDir + 'unit/**/*.js',
     lessFiles =     srcDir + 'less/**/*.less',
-    htmlFiles =     [srcDir + 'templates/**/*.html', appDir + 'index.html'],
+    HTMLFiles =     srcDir + '**/*.html',
     assetFiles =    appDir + 'assets',
     bowerDeps =     appDir + 'bower_components';
 
@@ -26,7 +28,7 @@ gulp.task('clean-dist', function () {
     return gulp.src(distDir + '*', {read: false}).pipe(clean());
 });
 
-gulp.task('dev-compile', function () {
+gulp.task('dev-js', function () {
     return gulp.src(JSFiles)
         .pipe(changed(distDir + 'js/'))
         .pipe(traceur({
@@ -42,8 +44,46 @@ gulp.task('dev-compile', function () {
         .pipe(connect.reload());
 });
 
+/**
+ * HTML fájlok újratöltése
+ */
+gulp.task('dev-html', function () {
+    return  gulp.src(HTMLFiles)
+        .pipe(changed(distDir))
+        .pipe(gulp.dest(distDir));
+});
+
+
+gulp.task('dev-assets', function(){
+    return es.concat(
+        gulp.src(assetFiles).pipe(symlink(distDir)),
+        gulp.src(bowerDeps).pipe(symlink(distDir))
+    );
+});
+
+/**
+ * Bower függőségek beszúrása az index.html-be
+ */
+gulp.task('bower', function () {
+    wiredep({
+        directory: 'bower_components',
+        bowerJson: require('./bower.json'),
+        src: [srcDir + 'index.html', testDir + 'karma-unit.conf.js'],
+        ignorePath: 'app/',
+        exclude: [ 'bower_components/es5-shim' ],
+        fileTypes: {
+            js: {
+                block: /(([\s\t]*)\/\/\s*bower:*(\S*)\s*)(\s\S)*?(\/\/\s*endbower\s*)/gi,
+                detect: { js: /\s*"(.+)",/gi },
+                replace: { js: '"{{filePath}}",' }
+            }
+        }
+    });
+});
+
 gulp.task('dev', ['clean-dist'], function () {
-    runSeq('dev-compile', function(){
-        gulp.watch(JSFiles, ['dev-compile']);
+    runSeq('dev-assets', 'dev-js', 'dev-html', function(){
+        gulp.watch(JSFiles, ['dev-js']);
+        gulp.watch(HTMLFiles, ['dev-html']);
     });
 });

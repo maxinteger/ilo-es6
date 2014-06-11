@@ -3,6 +3,7 @@
 <head>
 	<title>Ilo</title>
 
+    <link rel="stylesheet" href="css/main.css"/>
 	<script id="shader-fs" type="x-shader/x-fragment">
         void main(void) {
             gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
@@ -20,24 +21,12 @@
       }
     </script>
 
-	<style type="text/css" media="screen">
-		html,body{
-			margin: 0;
-			padding: 0;
-		}
-		#canvas{
-			display: block;
-			width: 320px;
-			margin: 50px auto;
-			border: 1px solid #333;
-		}
-	</style>
 </head>
 <body>
 	<canvas id="canvas" width="320" height="200"></canvas>
 
     <script type="text/javascript" src="../bower_components/lodash/dist/lodash.js"></script>
     <script type="text/javascript" src="../bower_components/traceur-runtime/traceur-runtime.js"></script>
-    <script type="text/javascript" src="../bower_components/requirejs/require.js" data-main="dist/js/main-unit.js"></script>
+    <script type="text/javascript" src="../bower_components/requirejs/require.js" data-main="js/main.js"></script>
 </body>
 </html>

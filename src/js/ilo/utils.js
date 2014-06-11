@@ -22,9 +22,9 @@ export function loadJSONFileAsync (fileName, callback) {
  * Create Mash array from Babylon JSON Model file
 */
 export function createMeshesFromJSON (jsonObject) {
-    const UV_COUNTS = [6,8,10];
+    var UV_COUNTS = [6,8,10];
     return _.map(jsonObject.meshes, function(data){
-        let verticesArray = data.positions,
+        var verticesArray = data.positions,
             indicesArray = data.indices,
             uvCount = data.uvCount,
             verticesStep = UV_COUNTS[uvCount] || 3;
@@ -33,21 +33,21 @@ export function createMeshesFromJSON (jsonObject) {
             facesCount = indicesArray.length / 3,
             mesh = new Mesh(data.name, verticesCount, facesCount);
 
-        for (let index = 0; index < verticesCount; index += 1) {
-            let x = verticesArray[index * verticesStep],
-                y = verticesArray[index * verticesStep + 1],
-                z = verticesArray[index * verticesStep + 2];
-            mesh.vertices[index] = new Vector3(x, y, z);
+        for (var i = 0; i < verticesCount; i += 1) {
+            var x = verticesArray[i * verticesStep],
+                y = verticesArray[i * verticesStep + 1],
+                z = verticesArray[i * verticesStep + 2];
+            mesh.vertices[i] = new Vector3(x, y, z);
         }
 
-        for (let index = 0; index < facesCount; index += 1) {
-            let a = indicesArray[index * 3],
-                b = indicesArray[index * 3 + 1],
-                c = indicesArray[index * 3 + 2];
-            mesh.faces[index] = { A: a, B: b, C: c };
+        for (var j = 0; j < facesCount; j += 1) {
+            var a = indicesArray[j * 3],
+                b = indicesArray[j * 3 + 1],
+                c = indicesArray[j * 3 + 2];
+            mesh.faces[j] = { A: a, B: b, C: c };
         }
 
-        let position = data.position;
+        var position = data.position;
         mesh.position = new Vector3(position[0], position[1], position[2]);
         return mesh;
     });

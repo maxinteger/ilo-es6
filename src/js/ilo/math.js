@@ -144,7 +144,7 @@ export class Quanternion{
      * @returns {Matrix}
      */
     toMatrix () {
-        let x = this.q[0],
+        var x = this.q[0],
             y = this.q[1],
             z = this.q[2],
             w = this.q[3],
@@ -185,7 +185,7 @@ export class Quanternion{
      * @returns {Quanternion}
      */
     rotate (x, y, z) {
-        let ax = [1.0, 0.0, 0.0],
+        var ax = [1.0, 0.0, 0.0],
             ay = [0.0, 1.0, 0.0],
             az = [0.0, 0.0, 1.0],
             qx = new Quanternion().setFromAxis(ax, radians(x)),

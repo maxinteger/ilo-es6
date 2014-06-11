@@ -33,7 +33,7 @@ gulp.task('dev-js', function () {
     return gulp.src(JSFiles)
         .pipe(changed(distDir + 'js/'))
         .pipe(traceur({
-            experimental: true,
+            //experimental: true,
             sourceMap: true,
             modules: 'amd'
         })

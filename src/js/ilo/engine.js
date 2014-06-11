@@ -92,13 +92,13 @@ export class Engine {
                         mesh.vertices[face.C].toArray()];
                 }));
 
-            this.gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-            this.gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
             mesh.buffer = {
                 vbo: vbo,
                 numOfFace: vertices.length / 3
             };
-        }, this);
+        });
         this.meshes = meshes;
     }
 

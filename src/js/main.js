@@ -13,7 +13,7 @@ function ready () {
     camera.position = new Vector3(-0.0, 0.0, 1.0);
     camera.Target   = new Vector3( 0.0, 0.0, 0.0);
 
-    loadJSONFileAsync('assets/monkey.babylon', function(data){
+    loadJSONFileAsync('assets/monkey.babylon').then(function(data){
         meshes = createMeshesFromJSON(data);
         engine.loadMeshes(meshes);
         renderLoop();

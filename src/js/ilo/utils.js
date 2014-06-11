@@ -2,20 +2,40 @@ import {Mesh} from './engine';
 import {Vector3} from '../vendor/babylon';
 
 /**
- * Load JSON files
-*/
-export function loadJSONFileAsync (fileName, callback) {
-    var jsonObject = {},
-        xmlHttp = new XMLHttpRequest();
+ * Get file with ajax
+ *
+ * @param {string} fileUrl  File url
+ * @returns {Promise}
+ */
+export function loadFile (fileUrl){
+    return new Promise(function(resolve, reject){
+        var req = new XMLHttpRequest();
+        req.open('GET', fileUrl);
+        req.onload = function (){
+            if (req.status === 200){
+                resolve(req.response);
+            } else {
+                reject(new Error(req.statusText));
+            }
+        };
+        req.onerror = function (err){
+            reject(new Error('Network Error ' + err));
+        };
 
-    xmlHttp.open("GET", fileName, true);
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-            jsonObject = JSON.parse(xmlHttp.responseText);
-            callback(jsonObject);
-        }
-    };
-    xmlHttp.send(null);
+        req.send();
+    });
+}
+
+/**
+ * Load JSON files
+ *
+ * @param fileName      File URL
+ * @returns {Promise}
+ */
+export function loadJSONFileAsync (fileName) {
+    return loadFile(fileName).then(function(response){
+        return JSON.parse(response);
+    });
 }
 
 /**

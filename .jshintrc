@@ -38,6 +38,7 @@
         "beforeEach": false,
         "afterEach": false,
         "expect": false,
-        "createClass": false
+        "createClass": false,
+        "Promise": false
     }
 }

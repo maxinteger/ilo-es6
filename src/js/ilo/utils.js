@@ -32,7 +32,7 @@ export function loadFile (fileUrl){
  * @param fileName      File URL
  * @returns {Promise}
  */
-export function loadJSONFileAsync (fileName) {
+export function loadJSONFile (fileName) {
     return loadFile(fileName).then(function(response){
         return JSON.parse(response);
     });

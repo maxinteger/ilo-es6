@@ -1,6 +1,11 @@
 import {radians, makePerspective, Quanternion} from './math';
 import {Vector3, Matrix} from '../vendor/babylon';
 
+/**
+ * Camere class
+ *
+ * @class
+ */
 export class Camera {
     constructor() {
         this.quan = new Quanternion();
@@ -40,6 +45,11 @@ export class Camera {
     }
 }
 
+/**
+ * Mash class
+ *
+ * @class
+ */
 export class Mesh{
     constructor (name, verticesCount, facesCount) {
         this.name = name;
@@ -51,6 +61,11 @@ export class Mesh{
 }
 
 
+/**
+ * Engine class
+ *
+ * @class
+ */
 export class Engine {
     constructor(canvas, meshes) {
         this.canvas = canvas;
@@ -135,14 +150,12 @@ export class Engine {
         var shaderScript = document.getElementById(id);
 
         // Didn't find an element with the specified ID; abort.
-
         if (!shaderScript) {
             return null;
         }
 
         // Walk through the source element's children, building the
         // shader source string.
-
         var theSource = "";
         var currentChild = shaderScript.firstChild;
 
@@ -150,7 +163,6 @@ export class Engine {
             if (currentChild.nodeType === 3) {
                 theSource += currentChild.textContent;
             }
-
             currentChild = currentChild.nextSibling;
         }
 
@@ -174,7 +186,7 @@ export class Engine {
 
         // See if it compiled successfully
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            window.alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+            window.alert("An error occurred compiling the shader: " + gl.getShaderInfoLog(shader));
             return null;
         }
 
@@ -209,11 +221,10 @@ export class Engine {
         this.perspectiveMatrix = makePerspective(45, this.aspect, 0.1, 100.0);
 
         _.each(this.meshes, function (mesh) {
-            this.gl.bindBuffer(gl.ARRAY_BUFFER, mesh.buffer.vbo);
-            this.gl.vertexAttribPointer(this.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+            gl.bindBuffer(gl.ARRAY_BUFFER, mesh.buffer.vbo);
+            gl.vertexAttribPointer(this.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
             this.setMatrixUniforms();
-            this.gl.drawArrays(gl.TRIANGLES, 0, mesh.buffer.numOfFace);
+            gl.drawArrays(gl.TRIANGLES, 0, mesh.buffer.numOfFace);
         }, this);
-
     }
 }

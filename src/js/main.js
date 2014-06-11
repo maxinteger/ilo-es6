@@ -1,6 +1,6 @@
 
 import {Camera, Engine} from './ilo/engine';
-import {loadJSONFileAsync, createMeshesFromJSON} from './ilo/utils';
+import {loadFile, loadJSONFile, createMeshesFromJSON} from './ilo/utils';
 import {Vector3} from './vendor/babylon';
 
 var canvas, camera, meshes, engine;
@@ -13,9 +13,16 @@ function ready () {
     camera.position = new Vector3(-0.0, 0.0, 1.0);
     camera.Target   = new Vector3( 0.0, 0.0, 0.0);
 
-    loadJSONFileAsync('assets/monkey.babylon').then(function(data){
-        meshes = createMeshesFromJSON(data);
+
+    Promise.all([
+        loadJSONFile('assets/models/monkey.babylon'),
+        loadFile('assets/shader/base.fs.glsl'),
+        loadFile('assets/shader/base.vs.glsl')
+    ]).then(function(results){
+        meshes = createMeshesFromJSON(results[0]);
         engine.loadMeshes(meshes);
+
+        engine.addShader();
         renderLoop();
     });
 }
